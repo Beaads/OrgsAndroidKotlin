@@ -29,7 +29,6 @@ class ListaProdutosAdapter(
             val valor = binding.produtoItemValor
             valor.text = produto.valor.toPlainString()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
