@@ -10,6 +10,7 @@ import com.example.orgs.databinding.ActivityFormularioProdutoBinding
 import com.example.orgs.databinding.FormularioImagemBinding
 import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.model.Produto
+import com.example.orgs.ui.dialog.FormularioImagemDialog
 import java.math.BigDecimal
 
     class FormularioProdutoActivity : AppCompatActivity() {
@@ -22,24 +23,14 @@ import java.math.BigDecimal
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(binding.root)
+            title = "Cadastrar Produto"
             configuraBotaoSalvar()
             binding.activityFormularioProdutoImagem.setOnClickListener {
-                val bindingFormularioImagem = FormularioImagemBinding.inflate(layoutInflater)
-                bindingFormularioImagem.formularioImagemBotaoCarregar.setOnClickListener {
-                    val url = bindingFormularioImagem.formularioImagemUrl.text.toString()
-                    bindingFormularioImagem.formularioImagemImageview.tentaCarregarImagem(url)
-                    }
-
-                AlertDialog.Builder(this)
-                    .setView(bindingFormularioImagem.root)
-                    .setPositiveButton("Confirmar") { _, _ ->
-                        url = bindingFormularioImagem.formularioImagemUrl.text.toString()
+                FormularioImagemDialog(this)
+                    .mostra(url) { imagem ->
+                        url = imagem
                         binding.activityFormularioProdutoImagem.tentaCarregarImagem(url)
-                    }
-                    .setNegativeButton("Cancelar") { _, _ ->
-
-                    }
-                    .show()
+                }
             }
         }
 

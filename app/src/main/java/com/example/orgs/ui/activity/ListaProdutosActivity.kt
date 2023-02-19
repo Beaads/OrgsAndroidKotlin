@@ -2,10 +2,12 @@ package com.example.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.orgs.dao.ProdutosDao
 import com.example.orgs.ui.recyclerview.adapter.ListaProdutosAdapter
 import com.example.orgs.databinding.ActivityListaProdutosBinding
+import com.example.orgs.ui.dialog.FormularioImagemDialog
 
 class ListaProdutosActivity : AppCompatActivity() {
 
