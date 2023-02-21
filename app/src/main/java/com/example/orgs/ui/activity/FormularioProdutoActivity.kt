@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.orgs.dao.ProdutosDao
 import com.example.orgs.databinding.ActivityFormularioProdutoBinding
-import com.example.orgs.dao.extensions.tentaCarregarImagem
+import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.model.Produto
 import com.example.orgs.ui.dialog.FormularioImagemDialog
 import java.math.BigDecimal

@@ -1,4 +1,4 @@
-package com.example.orgs.dao.extensions
+package com.example.orgs.extensions
 
 import android.widget.ImageView
 import coil.load

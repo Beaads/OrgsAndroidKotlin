@@ -2,8 +2,8 @@ package com.example.orgs.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.orgs.dao.extensions.formataParaMoedaBrasileira
-import com.example.orgs.dao.extensions.tentaCarregarImagem
+import com.example.orgs.extensions.formataParaMoedaBrasileira
+import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.databinding.ActivityDetalhesProdutoBinding
 import com.example.orgs.model.Produto
 

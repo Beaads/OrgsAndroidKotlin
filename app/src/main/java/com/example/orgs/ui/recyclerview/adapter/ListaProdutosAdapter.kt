@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.orgs.dao.extensions.formataParaMoedaBrasileira
+import com.example.orgs.extensions.formataParaMoedaBrasileira
 import com.example.orgs.databinding.ProdutoItemBinding
-import com.example.orgs.dao.extensions.tentaCarregarImagem
+import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.model.Produto
 import java.math.BigDecimal
 import java.text.NumberFormat

@@ -1,4 +1,4 @@
-package com.example.orgs.dao.extensions
+package com.example.orgs.extensions
 
 import java.math.BigDecimal
 import java.text.NumberFormat
