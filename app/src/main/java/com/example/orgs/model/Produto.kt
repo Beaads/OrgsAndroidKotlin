@@ -1,9 +1,11 @@
 package com.example.orgs.model
 
 import android.os.Parcelable
+import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
+@Entity
 @Parcelize
 data class Produto(
     val nome: String,
@@ -11,6 +13,3 @@ data class Produto(
     val valor: BigDecimal,
     val imagem: String? = null
 ) : Parcelable
-
-
-
