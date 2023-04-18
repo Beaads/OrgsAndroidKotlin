@@ -1,16 +1,17 @@
 package com.example.orgs.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.orgs.database.AppDatabase
 import com.example.orgs.database.dao.ProdutoDao
 import com.example.orgs.databinding.ActivityFormularioProdutoBinding
 import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.model.Produto
 import com.example.orgs.ui.dialog.FormularioImagemDialog
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class FormularioProdutoActivity : AppCompatActivity() {
+class FormularioProdutoActivity : UsuarioBaseActivity() {
 
     private val binding by lazy {
         ActivityFormularioProdutoBinding.inflate(layoutInflater)
@@ -20,6 +21,9 @@ class FormularioProdutoActivity : AppCompatActivity() {
     private val produtoDao: ProdutoDao by lazy {
         val db = AppDatabase.instancia(this)
         db.produtoDao()
+    }
+    private val usuarioDao by lazy {
+        AppDatabase.instancia(this).usuarioDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +39,7 @@ class FormularioProdutoActivity : AppCompatActivity() {
                 }
         }
         tentaCarregarProduto()
+
     }
 
     private fun tentaCarregarProduto() {
@@ -47,9 +52,13 @@ class FormularioProdutoActivity : AppCompatActivity() {
     }
 
     private fun tentaBuscarProduto() {
-        produtoDao.buscaPorId(produtoId)?.let {
-            title = "Alterar produto"
-            preencheCampos(it)
+        lifecycleScope.launch {
+            produtoDao.buscaPorId(produtoId).collect {
+                it?.let { produtoEncontrado ->
+                    title = "Alterar produto"
+                    preencheCampos(produtoEncontrado)
+                }
+            }
         }
     }
 
@@ -69,13 +78,17 @@ class FormularioProdutoActivity : AppCompatActivity() {
         val botaoSalvar = binding.activityFormularioProdutoBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val produtoNovo = criaProduto()
-            produtoDao.salva(produtoNovo)
-            finish()
+            lifecycleScope.launch {
+                usuario.value?.let { usuario ->
+                    val produtoNovo = criaProduto(usuario.id)
+                    produtoDao.salva(produtoNovo)
+                    finish()
+                }
+            }
         }
     }
 
-    private fun criaProduto(): Produto {
+    private fun criaProduto(usuarioId: String): Produto {
         val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
         val campoDescricao = binding.activityFormularioProdutoDescricao
@@ -93,7 +106,9 @@ class FormularioProdutoActivity : AppCompatActivity() {
             nome = nome,
             descricao = descricao,
             valor = valor,
-            imagem = url
+            imagem = url,
+            usuarioId = usuarioId
         )
     }
+
 }

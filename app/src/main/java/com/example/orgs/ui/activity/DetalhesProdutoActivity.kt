@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.orgs.R
 import com.example.orgs.database.AppDatabase
 import com.example.orgs.extensions.formataParaMoedaBrasileira
 import com.example.orgs.extensions.tentaCarregarImagem
 import com.example.orgs.databinding.ActivityDetalhesProdutoBinding
 import com.example.orgs.model.Produto
+import kotlinx.coroutines.launch
+
 
 class DetalhesProdutoActivity : AppCompatActivity() {
 
@@ -35,10 +38,14 @@ class DetalhesProdutoActivity : AppCompatActivity() {
     }
 
     private fun buscaProduto() {
-        produto = produtoDao.buscaPorId(produtoId)
-        produto?.let {
-            preencheCampos(it)
-        } ?: finish()
+        lifecycleScope.launch {
+            produtoDao.buscaPorId(produtoId).collect { produtoEncontrado ->
+                produto = produtoEncontrado
+                produto?.let {
+                    preencheCampos(it)
+                } ?: finish()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,8 +56,13 @@ class DetalhesProdutoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_detalhes_produto_remover -> {
-                produto?.let { produtoDao.remove(it) }
-                finish()
+                produto?.let {
+                    lifecycleScope.launch {
+                        produtoDao.remove(it)
+                        finish()
+                    }
+                }
+
             }
             R.id.menu_detalhes_produto_editar -> {
                 Intent(this, FormularioProdutoActivity::class.java).apply {
@@ -75,4 +87,5 @@ class DetalhesProdutoActivity : AppCompatActivity() {
                 produtoCarregado.valor.formataParaMoedaBrasileira()
         }
     }
+
 }
